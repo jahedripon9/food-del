@@ -1,31 +1,31 @@
 import express from 'express';
-import { addFood, listFood, removeFood } from '../controllers/foodController.js';
 import multer from 'multer';
 import fs from 'fs';
+import { addFood, listFood, removeFood } from '../controllers/foodController.js';
 
 const foodRoute = express.Router();
 
-// ✅ Use writable temporary directory
-const uploadPath = '/tmp/uploads';
+// ✅ Use /tmp for writable file storage in serverless environments
+const uploadDir = '/tmp/uploads';
 
-// ✅ Create the folder if it doesn't exist
-if (!fs.existsSync(uploadPath)) {
-    fs.mkdirSync(uploadPath, { recursive: true });
+// ✅ Ensure directory exists
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadPath);
+    destination: function (req, file, cb) {
+        cb(null, uploadDir);
     },
-    filename: (req, file, cb) => {
+    filename: function (req, file, cb) {
         cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
 
 const upload = multer({ storage });
 
-foodRoute.post("/add", upload.single("image"), addFood);
-foodRoute.get("/list", listFood);
-foodRoute.post("/remove", removeFood);
+foodRoute.post('/add', upload.single('image'), addFood);
+foodRoute.get('/list', listFood);
+foodRoute.post('/remove', removeFood);
 
 export default foodRoute;
