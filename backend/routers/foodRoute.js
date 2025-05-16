@@ -2,17 +2,17 @@ import express from 'express';
 import { addFood, listFood, removeFood } from '../controllers/foodController.js';
 import multer from 'multer';
 import fs from 'fs';
-import path from 'path';
 
 const foodRoute = express.Router();
 
-// ✅ Ensure /tmp/uploads exists (writable in Lambda/Vercel)
+// ✅ Use writable temporary directory
 const uploadPath = '/tmp/uploads';
+
+// ✅ Create the folder if it doesn't exist
 if (!fs.existsSync(uploadPath)) {
     fs.mkdirSync(uploadPath, { recursive: true });
 }
 
-// ✅ Use '/tmp/uploads' instead of 'uploads'
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, uploadPath);
