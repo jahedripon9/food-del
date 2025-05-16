@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import 'dotenv/config';
+import 'dotenv/config'
 import { connectDB } from './config/db.js';
 import foodRoute from './routers/foodRoute.js';
 import userRouter from './routers/userRoute.js';
@@ -9,6 +9,7 @@ import orderRouter from './routers/orderRoute.js';
 
 // app config
 const app = express();
+const port = 4000
 
 // middleware
 app.use(express.json());
@@ -22,11 +23,13 @@ app.use("/api/food", foodRoute);
 app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
-app.use("/api/order", orderRouter);
+app.use("/api/order", orderRouter)
 
+// hello
 app.get('/', (req, res) => {
-    res.send("API Working");
-});
+    res.send("API Working")
+})
 
-// ❌ Remove app.listen() — Vercel will invoke the app as a function
-export default app;
+
+app.listen(port, () => console.log('Server Started on PORT:' + port))
+
