@@ -1,30 +1,20 @@
-import foodModel from "../models/foodModel.js";
-import cloudinary from 'cloudinary';
-import fs from "fs";
+// controllers/foodController.js
+import foodModel from '../models/foodModel.js';
 
-// Add food item
-const addFood = async (req, res) => {
+export const addFood = async (req, res) => {
     try {
-        const uploadedImage = await cloudinary.v2.uploader.upload(req.file.path, {
-            folder: "foodApp"
-        });
-
         const food = new foodModel({
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
             category: req.body.category,
-            image: uploadedImage.secure_url // ✅ Use Cloudinary URL
+            image: req.file.path // multer-storage-cloudinary ব্যবহার করলে এটাই কাজ করে
         });
 
         await food.save();
-
-        // Delete local temp file
-        fs.unlinkSync(req.file.path);
-
-        res.json({ success: true, message: "Food item added successfully" });
+        res.status(200).json({ success: true, message: "Food item added successfully", image: food.image });
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: "Failed to add food item" });
+        console.error(error);
+        res.status(500).json({ success: false, message: "Server error" });
     }
-}
+};
