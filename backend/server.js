@@ -6,6 +6,7 @@ import foodRoute from './routers/foodRoute.js';
 import userRouter from './routers/userRoute.js';
 import cartRouter from './routers/cartRoute.js';
 import orderRouter from './routers/orderRoute.js';
+import connectCloudinary from './config/cloudinary.js';
 
 // app config
 const app = express();
@@ -17,10 +18,12 @@ app.use(cors());
 
 // db connection
 connectDB();
+connectCloudinary()
+
 
 // API endpoints
 app.use("/api/food", foodRoute);
-app.use("/images", express.static("/tmp/uploads"));
+
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter)
