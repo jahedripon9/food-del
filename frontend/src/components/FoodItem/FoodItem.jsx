@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './FoodItem.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext';
@@ -6,9 +6,26 @@ import { StoreContext } from '../../context/StoreContext';
 const FoodItem = ({ id, name, price, description, image }) => {
 
 
-    const { cartItems, addToCart, removeFromCart,url } = useContext(StoreContext);
+    const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
+    const [image, setImage] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState('');
+
+    if (response.data.success) {
+        setData({
+            name: "",
+            description: "",
+            price: "",
+            category: "Salad"
+        });
+        setImage(false);
+        setPreviewUrl(response.data.image); // ✅ এখানে Cloudinary URL সেট হচ্ছে
+        toast.success(response.data.message);
+    } else {
+        toast.error(response.data.message);
+    }
 
     return (
+        
         <div className='food-item'>
             <div className='food-item-img-container'>
                 <img src={previewUrl || (image && URL.createObjectURL(image)) || assets.upload_area} alt="preview" />
