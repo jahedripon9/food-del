@@ -4,9 +4,9 @@ import { assets } from '../../assets/assets'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const Add = ({ url }) => {
+const Add = ({ url,token }) => {
 
-    const [image1, setImage] = useState(false);
+    const [image, setImage] = useState(false);
     const [data, setData] = useState({
         name: "",
         description: "",
@@ -27,9 +27,9 @@ const Add = ({ url }) => {
         formData.append("description", data.description)
         formData.append("price", Number(data.price))
         formData.append("category", data.category)
-        image1 && formData.append('image1', image1)
+        formData.append("image", image)
 
-        const response = await axios.post(`${url}/api/food/add`, formData,)
+        const response = await axios.post(`${url}/api/food/add`, formData)
         if (response.data.success) {
             setData({
                 name: "",
@@ -52,7 +52,7 @@ const Add = ({ url }) => {
                 <div className='add-img-upload flex-col'>
                     <p>Upload Image</p>
                     <label htmlFor="image">
-                        <img src={image ? URL.createObjectURL(image1) : assets.upload_area} alt="" />
+                        <img src={image ? URL.createObjectURL(image) : assets.upload_area} alt="" />
                     </label>
                     <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" hidden required />
                 </div>
