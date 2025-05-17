@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 const Add = ({ url }) => {
 
-    const [image1, setImage] = useState(false);
+    const [image1, setImage1] = useState(false);
     const [data, setData] = useState({
         name: "",
         description: "",
@@ -59,7 +59,7 @@ const Add = ({ url }) => {
                     <label htmlFor="image">
                         <img  src={!image1 ? assets.upload_area : URL.createObjectURL(image1)} alt="" />
                     </label>
-                    <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image1" hidden required />
+                    <input onChange={(e) => setImage1(e.target.files[0])} type="file" id="image1" hidden required />
                 </div>
                 <div className="add-product-name flex-col">
                     <p>Product Name</p>
