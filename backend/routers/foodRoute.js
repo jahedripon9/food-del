@@ -1,25 +1,18 @@
 import express from 'express';
-import multer from 'multer';
-import fs from 'fs';
 import { addFood, listFood, removeFood } from '../controllers/foodController.js';
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../config/cloudinary.js';
 
 const foodRoute = express.Router();
 
-// ✅ Use /tmp for writable file storage in serverless environments
-const uploadDir = '/tmp/uploads';
-
-// ✅ Ensure directory exists
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir);
+// ✅ Use Cloudinary for image storage
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'food_images',
+        allowed_formats: ['jpg', 'png', 'jpeg'],
     },
-    filename: function (req, file, cb) {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
 });
 
 const upload = multer({ storage });
