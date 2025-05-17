@@ -6,10 +6,6 @@ import upload from '../middleware/multer.js';
 
 const foodRoute = express.Router();
 
-
-
-
-
 foodRoute.post('/add', authMiddleware, upload.fields([
     { name: 'image1', maxCount: 1 }
 ]), addFood);
